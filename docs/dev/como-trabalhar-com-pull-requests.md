@@ -40,25 +40,77 @@ $ git remote add origin git@github.com:USERNAME/semctl
 
 ### Criar um PR
 
+É uma boa prática sempre saber em que branch você está e qual o estado
+atual do seu repositório.
+Muitas vezes seu terminal ou IDE vai mostrar essas informações, mas
+se habitue a fazer:
+
 ```bash
-# saber em qual branch vc está
 $ git status
 On branch main
 Your branch is up to date with 'upstream/main'.
 (...)
-
-# atualizar 'main' local com o que está na 'main' do upstream
-$ git fetch upstream
-$ git rebase upstream/main
-
-# cria e muda para nova branch baseada na atual (main)
-$ git checkout -b MYBRANCH
-
-# cria e muda para nova branch baseada na atual (main)
-$ git add docs
-$ git commit -m "Melhorar documentacao para devs"
-
-# envia os commits locais da branch MYBRANCH para MYBRANCH do 'origin' (seu fork)
-# HEAD aqui é equivalente a branch atual, que no caso é  MYBRANCH
-$ git push origin HEAD
 ```
+
+1. Atualizar 'main' local
+
+    Atualiza branch local com o que está na 'main' do upstream.
+    Nesse caso, o rebase aplica os commits que estao em upstream/main
+    e que não estão na branch atual. Pode haver um conflito, mas isso
+    fica para outra guia.
+
+    ```bash
+    git fetch upstream
+    git rebase upstream/main
+    ```
+
+2. Criar e mudar para nova branch (feature branch)
+
+    A nova branch é baseada no estado da atual (main, no caso).
+    Se a branch atual fosse outra, ele "copiaria" dela.
+
+    ```bash
+    git checkout -b MYBRANCH
+    ```
+
+3. Implementar mudança e comitar
+
+    Esse estado ainda é totalmente local.
+    Seu fork e o repositório principal no github não sabem das suas mudanças.
+
+    ```bash
+    # ... editar arquivos, entao:
+    git add docs
+    git commit -m "Melhorar documentacao para devs"
+    ```
+
+4. Fazer push para o seu fork
+
+    Envia os commits locais da branch MYBRANCH para MYBRANCH do 'origin' (seu fork).
+    HEAD aqui é equivalente a branch atual, que no caso é  MYBRANCH.
+
+    ```bash
+    git push origin HEAD
+    ````
+
+5. Processo de Review do seu PR
+
+    - 1. Alguem faz um review e pede uma mudança. Volte no passo 3
+    - 1. O PR nao foi revisado, mas vc lembrou que precisa fazer mais algo. Volte no passo 3
+    - 1. O PR nao foi revisado e vc está com pressa. Cutuque seus colegas
+    - 1. Seu PR foi aprovado. Parabéns!
+
+
+> [!NOTE]
+> O passo (1) pode ser feito com `git pull`, que basicamente realiza essas duas
+> operações, mas sua branch precisa estar configurada corretamente. Não vou cobrir
+> essa abordagem aqui. No geral, recomendo usar a forma explícita que mostro aqui
+> para ajudar a entender o que realmente está acontecendo.
+
+## Referências
+
+* Alguns videos de um processo de Pull Request (existem muitos):
+    * <https://www.youtube.com/watch?v=U-Y_Mtdyo74>
+    * <https://www.youtube.com/watch?v=Du04jBWrv4A>
+    * **Crítica**: em ambos os videos eles comitam na main do fork deles.
+      Isso pode funcionar em casos simples, mas no geral é uma boa prática sempre criar uma "feature branch" (pr-branch?) baseada na main para trabalhar. 

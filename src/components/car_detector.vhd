@@ -7,6 +7,7 @@
 --   Out_Car: 1 bit - Saida 
 --   ss: 1 bit - Saida do estado interno
 
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 

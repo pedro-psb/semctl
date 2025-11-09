@@ -4,8 +4,8 @@ use  ieee.numeric_std.all;
 
 entity somador is 
 	generic (
-      N_BITS : integer := 7
-      M_BITS : integer := 3
+      N_BITS : integer := 8;
+      M_BITS : integer := 4
     );
 
     port (
@@ -16,7 +16,7 @@ end entity somador;
 
 architecture behavioral of somador is
 begin 
-    contator_proc: process (data_in) is
+    contador_proc: process (data_in) is
     	variable v_contador : integer range 0 to N_BITS;
     begin
         v_contador := 0;

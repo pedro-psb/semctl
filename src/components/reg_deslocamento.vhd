@@ -6,6 +6,7 @@
 --   in_car: 1 bit
 --   clk: 1 bit
 --   enable: 1 bit
+--   rst: 1 bit
 -- output:
 --   output: N bits  (e.g  N=10,  0100001001)
 

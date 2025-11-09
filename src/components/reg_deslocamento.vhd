@@ -1,5 +1,7 @@
 -- Registrador de Deslocamento
---
+-- 
+-- generic:
+--   N - Tamanho do registrador em bits
 -- input:
 --   in_car: 1 bit
 --   clk: 1 bit
@@ -13,9 +15,9 @@ library ieee;
 
 
 entity reg_deslocamento is
-  generic ( N : integer := 4 );
+  generic (N : integer := 4);
   port (
-    in_car, clk, rst : in  std_logic;
+    in_car, clk, rst, enable : in  std_logic;
     output : out std_logic_vector(N-1 downto 0)
   );
 end entity;
@@ -27,7 +29,8 @@ begin
     variable resized_in : STD_LOGIC_VECTOR(N-1 downto 0);
     variable shifted_out :  STD_LOGIC_VECTOR(N-1 downto 0);
   begin
-    if (rising_edge(clk)) then
+    -- se enable = '0', mantem memoria inalterada
+    if (rising_edge(clk) and enable = '1') then
       -- shift output antes e preenche com zero
       -- e.g, 1000 -> 0100, 0100 -> 0010
       shifted_out := output srl  1;   -- shift right logical (preenche com 0's)
@@ -42,7 +45,7 @@ begin
       -- e.g (in_car=1) "0011" -> "1001"
       -- e.g (in_car=0) "1000" -> "0100"
       output <= shifted_out or resized_in;
-    elsif (rst) then
+    elsif (rst = '1') then
       output <= (others => '0');
     end if;
   end process;

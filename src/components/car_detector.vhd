@@ -53,3 +53,5 @@ end process sync_proc;
       end case;
     end process comb_proc;
 end car_detector;
+
+--OBS.:RST tem é uma das variáveis que devem ser inicializadas no projeto completo

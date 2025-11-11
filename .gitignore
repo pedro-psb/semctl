@@ -88,6 +88,9 @@ output_files/
 *.exe
 e~*.vhd
 
+# Testbench files in root directory
+/tb_*
+
 # Lattice Diamond
 *.ldf
 *.prj

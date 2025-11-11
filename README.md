@@ -4,6 +4,7 @@ Sistema vhdl para controle de semáforos em um cruzamento simples.
 
 Integrantes:
 * Pedro Brochado
+* Pedro Armando
 
 
 ## Introducao

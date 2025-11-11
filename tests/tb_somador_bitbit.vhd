@@ -2,21 +2,21 @@ library ieee;
 use ieee.std_logic_1164.all;
 use  ieee.numeric_std.all;
 
-entity tb_somador is
-end entity tb_somador;
+entity tb_somador_bitbit is
+end entity tb_somador_bitbit;
 
-architecture test of tb_somador is
-    constant C_N_BITS : integer := 8;
-    constant C_M_BITS : integer := 4;
+architecture test of tb_somador_bitbit is
+    constant C_N_in : integer := 8;
+    constant C_N_out : integer := 4;
 	constant C_WAIT_TIME : time := 10 ns;
-    signal s_data_in : std_logic_vector(C_N_BITS-1 downto 0);
-    signal s_sum_out : std_logic_vector(C_M_BITS-1 downto 0);
+    signal s_data_in : std_logic_vector(C_N_in-1 downto 0);
+    signal s_sum_out : unsigned(C_N_out-1 downto 0);
 
 begin
-	UUT: entity work.somador(behavioral)
+	UUT: entity work.somador_bitbit(behavioral)
         generic map (
-            N_BITS => C_N_BITS,
-            M_BITS => C_M_BITS
+            N_in => C_N_in,
+            N_out => C_N_out
         )
         port map (
             data_in => s_data_in,
@@ -26,7 +26,7 @@ begin
     -- 4. Processo de estímulo
     stimulus_proc: process is
     begin
-        report "Iniciando teste do somador de N bits...";
+        report "Iniciando teste do somador_bitbit de N bits...";
         
         -- Caso 1: Tudo zero
         -- (others => '0') é um atalho para "00000000"

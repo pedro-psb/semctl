@@ -1,4 +1,54 @@
---contador simples de clock
+-- Clock Converter (Divisor de Clock)
+--
+-- Descrição:
+--   Este módulo divide a frequência de um clock de entrada, gerando um clock
+--   mais lento na saída. A saída alterna entre '0' e '1' a cada DIV_FACTOR
+--   ciclos do clock de entrada.
+--
+-- Funcionamento:
+--   - Um contador interno conta de 0 até DIV_FACTOR-1.
+--   - Quando atinge DIV_FACTOR-1, ele zera e inverte o sinal do clock de saída.
+--   - Portanto, o período completo da onda gerada é:
+--     T_out = 2 * DIV_FACTOR * T_in
+--     Onde T_in é o período do clock de entrada.
+--
+-- generic:
+--   DIV_FACTOR : integer
+--       Fator de divisão.
+--       Cada alternância do clock de saída ocorre a cada DIV_FACTOR ciclos.
+--       OBS: A frequência final será dividida por 2 * DIV_FACTOR.
+--
+-- Fórmulas úteis:
+--   freq_out = freq_in / (2 * DIV_FACTOR)
+--   DIV_FACTOR = freq_in / (2 * freq_out)
+--
+-- Entrada:
+--   in_clk : std_logic
+--       Clock de entrada.
+--
+--   RST : std_logic
+--       Reset assíncrono. Quando '1', zera contador e saída.
+--
+-- Saída:
+--   out_clk : std_logic
+--       Clock dividido.
+--
+-- Exemplos:
+--
+--   Suponha freq_in = 50 MHz → T_in = 20 ns
+--
+--   1) Gerar clock de 1 segundo (freq_out = 1 Hz)
+--        DIV_FACTOR = freq_in / (2 * freq_out)
+--                   = 50_000_000 / 2
+--                   = 25_000_000
+--
+--   2) Gerar clock de 0,5 s (freq_out = 2 Hz)
+--        DIV_FACTOR = 50_000_000 / (2 * 2)
+--                   = 12_500_000
+--
+--   3) Gerar clock de 500 Hz a partir de 100 MHz
+--        DIV_FACTOR = 100_000_000 / (2 * 500)
+--                   = 100_000
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all; 

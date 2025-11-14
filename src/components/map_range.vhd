@@ -1,4 +1,5 @@
--- map_range
+-- Mapeador de Range
+-- 
 -- Recebe uma entranda signed de N bits
 -- Transforma em uma saida signed de M bits
 -- A saida se relaciona proporcionalmente com a entrada
@@ -6,6 +7,11 @@
 -- Vamos adotar o uso de  "generic"  para poder alterar esse valor conforme necessário
 
 -- Da forma em que está escrito o código precisa de uma saida M de no mínimo 4 bits
+-- 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
   
 library ieee;
 use ieee.std_logic_1164.all;

@@ -49,6 +49,12 @@
 --   3) Gerar clock de 500 Hz a partir de 100 MHz
 --        DIV_FACTOR = 100_000_000 / (2 * 500)
 --                   = 100_000
+--
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all; 

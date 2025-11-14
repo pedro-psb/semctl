@@ -1,3 +1,7 @@
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;

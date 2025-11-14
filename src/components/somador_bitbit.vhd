@@ -7,6 +7,11 @@
 --   data_in: N_in bits - Vetor binário
 -- output:
 --   sum_out: N_out bits - Numero (sem sinal) de 1s em @data_in
+-- 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library ieee;
 use ieee.std_logic_1164.all;

@@ -1,12 +1,16 @@
---Detector de transição 0/1
---car_detector
+-- Detector de transição 0/1
+--
 -- input:
 --  In_Car: 1 bit - Entrada da fms
 --   clk: 1 bit - Entrada do clock
 -- output:
 --   Out_Car: 1 bit - Saida 
 --   ss: 1 bit - Saida do estado interno
-
+--
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library IEEE;
 use IEEE.std_logic_1164.all;

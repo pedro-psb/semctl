@@ -1,5 +1,10 @@
 -- Testbench for reg_deslocamento
 -- Tests shift register functionality including reset and shifting operations
+-- 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library ieee;
 use ieee.std_logic_1164.all;

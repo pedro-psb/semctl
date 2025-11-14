@@ -1,6 +1,4 @@
--- config_countdown
---
--- Contador regressivo configurável.
+-- Contador regressivo configurável
 --
 -- Funcionamento:
 --  - rst = '1': zera o contador e o valor de recarga (reset síncrono)
@@ -16,6 +14,10 @@
 -- Saída:
 --   X   : valor atual do contador
 --
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library IEEE;
 use IEEE.std_logic_1164.all;

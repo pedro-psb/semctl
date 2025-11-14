@@ -7,6 +7,11 @@
 --   b: N bits
 -- output:
 --   output: N+1 bits
+-- 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library ieee;
   use ieee.std_logic_1164.all;

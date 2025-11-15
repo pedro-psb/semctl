@@ -48,8 +48,8 @@ begin
       	wait for 5*C_CLK_PERIOD;
       	s_rst <= '0';
 		wait for 50*C_CLK_PERIOD;
- 	 	s_rst <= '1';
-		wait for 200*C_CLK_PERIOD;
+ 	 	-- s_rst <= '1';
+		-- wait for 200*C_CLK_PERIOD;
 
   		report "Fim da simulação" severity note; 
 

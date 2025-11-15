@@ -8,6 +8,11 @@
 --   inverte: 1 bits - Quando inverte=1, faz b-a. Caso contrario, a-b
 -- output:
 --   output: N+1 bits
+--
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library ieee;
   use ieee.std_logic_1164.all;

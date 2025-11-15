@@ -9,6 +9,11 @@
 --   rst: 1 bit
 -- output:
 --   output: N bits  (e.g  N=10,  0100001001)
+-- 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
 
 library ieee;
   use ieee.std_logic_1164.all;

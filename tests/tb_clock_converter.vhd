@@ -1,4 +1,8 @@
--- Testbench 
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -44,8 +48,8 @@ begin
       	wait for 5*C_CLK_PERIOD;
       	s_rst <= '0';
 		wait for 50*C_CLK_PERIOD;
- 	 	s_rst <= '1';
-		wait for 200*C_CLK_PERIOD;
+ 	 	-- s_rst <= '1';
+		-- wait for 200*C_CLK_PERIOD;
 
   		report "Fim da simulação" severity note; 
 

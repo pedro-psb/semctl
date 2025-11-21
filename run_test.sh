@@ -7,7 +7,7 @@ set -e  # Exit on any command failure
 function print_tb_disponiveis(){
     echo ""
     echo "Available testbenches:"
-    ls -la tests/
+    ls tests/
 }
 
 function print_usage(){

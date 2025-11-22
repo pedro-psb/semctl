@@ -49,7 +49,7 @@ architecture testbench of tb_reg_deslocamento is
             report test_name & " | PASSOU: saida = " & to_string(actual);
         else
             report test_name & " | FALHA: " & " esperava " & to_string(expected) & ", obteve: " & to_string(actual)
-                severity error;
+                severity failure;
         end if;
     end procedure;
 

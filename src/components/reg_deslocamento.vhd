@@ -1,5 +1,5 @@
 -- Registrador de Deslocamento
--- 
+--
 -- generic:
 --   N - Tamanho do registrador em bits
 -- input:
@@ -29,32 +29,29 @@ entity reg_deslocamento is
 end entity;
 
 
-architecture behavoral of reg_deslocamento  is
+architecture structural of reg_deslocamento  is
+  component reg is
+    port (
+      data_in, clk, rst, enable : in  std_logic;
+      data_out : out std_logic
+    );
+  end component;
+
+  -- sinal auxiliar para mapeamento dos registradores
+  signal tmp_reg : std_logic_vector(N downto 0);
 begin
-  process(clk, rst) is
-    variable resized_in : STD_LOGIC_VECTOR(N-1 downto 0);
-    variable shifted_out :  STD_LOGIC_VECTOR(N-1 downto 0);
-  begin
-    -- se enable = '0', mantem memoria inalterada
-    if (rising_edge(clk) and enable = '1') then
-      -- shift output antes e preenche com zero
-      -- e.g, 1000 -> 0100, 0100 -> 0010
-      shifted_out := output srl  1;   -- shift right logical (preenche com 0's)
+  tmp_reg(N) <= in_car;
+  output <= tmp_reg(N-1 downto 0);
+  instance_regs : for i in 0 to N-1 generate
+    reg_i : reg port map (
+        data_in => tmp_reg(i+1),
+        data_out => tmp_reg(i),
+        clk => clk,
+        enable => enable,
+        rst => rst
+      );
+  end generate;
 
-      -- cria vetor com in_car como MSD
-      -- e.g, '1' -> "1000", '0' -> "0000"
-      resized_in :=     (others => '0');
-      resized_in(N-1) := in_car;
-
-      -- adiciona in_car no MSD e descarta LSD
-      -- e.g (in_car=1) "1001" -> "1100"
-      -- e.g (in_car=1) "0011" -> "1001"
-      -- e.g (in_car=0) "1000" -> "0100"
-      output <= shifted_out or resized_in;
-    elsif (rst = '1') then
-      output <= (others => '0');
-    end if;
-  end process;
 end architecture;
 
 

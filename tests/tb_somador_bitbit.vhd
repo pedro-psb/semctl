@@ -1,3 +1,8 @@
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
+
 library ieee;
 use ieee.std_logic_1164.all;
 use  ieee.numeric_std.all;
@@ -13,7 +18,7 @@ architecture test of tb_somador is
     signal s_sum_out : std_logic_vector(C_M_BITS-1 downto 0);
 
 begin
-	UUT: entity work.somador(behavioral)
+	UUT: entity work.somador(dataflow)
         generic map (
             N_BITS => C_N_BITS,
             M_BITS => C_M_BITS

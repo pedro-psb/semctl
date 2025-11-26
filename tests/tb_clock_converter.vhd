@@ -1,4 +1,10 @@
+-- Integrantes:
+-- * Guilherme Augusto
+-- * Pedro Armando
+-- * Pedro Pessoa
+
 -- Testbench 
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
@@ -15,7 +21,7 @@ architecture test of tb_clock_converter is
     signal s_rst : std_logic;
 	
 begin 
-	UUT: entity work.clock_converter(behavioral)
+	UUT: entity work.clock_converter(dataflow)
     	generic map (
         	DIV_FACTOR => C_DIV_FACTOR
         )

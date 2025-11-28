@@ -21,7 +21,7 @@ library ieee;
 
 
 entity reg_deslocamento is
-  generic (N : integer := 4);
+  generic (N : integer := 64);
   port (
     in_car, clk, rst, enable : in  std_logic;
     output : out std_logic_vector(N-1 downto 0)

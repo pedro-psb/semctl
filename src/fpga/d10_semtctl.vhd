@@ -38,11 +38,13 @@
 -- ==============================
 --
 -- As entradas serão mapeadas:
--- * KEY0 (de cima)    -> in_car1
--- * KEY1 (de cima)    -> in_car2
--- * SW0 (da esquerda) -> in_mad
--- * SW9 (da direita)  -> clk (quando no modo manual)
--- * SW8 (penultimo)   -> rst
+-- * Keys:
+--     * KEY0 (de cima)    -> in_car1
+--     * KEY1 (de cima)    -> in_car2
+-- * Switches: (clk rst ... in_mad)
+--     * SW0 (da esquerda) -> in_mad
+--     * SW9 (da direita)  -> clk (quando no modo manual)
+--     * SW8 (penultimo)   -> rst
 --
 
 library IEEE;
@@ -67,7 +69,7 @@ entity de10_semctl is port (
 architecture structural of de10_semctl
 is
   -- Components
-  component sem_hex_decoder is
+  component d10_sem_hex_decoder is
     port (
       in_sem : in  std_logic_vector(1 downto 0);
       hex_config : out std_logic_vector(6 downto 0)
@@ -129,36 +131,36 @@ begin
   LEDR <= out_fsm;
 
   -- sem1 + ped1
-  dec0 : sem_hex_decoder
+  dec0 : d10_sem_hex_decoder
     port map(
       in_sem => sem1,
       hex_config => HEX5
     );
-  dec1 : sem_hex_decoder
+  dec1 : d10_sem_hex_decoder
     port map(
       in_sem => ped1,
       hex_config => HEX4
     );
 
   -- sem2 + ped2
-  dec2 : sem_hex_decoder
+  dec2 : d10_sem_hex_decoder
     port map(
       in_sem => sem2,
       hex_config => HEX3
     );
-  dec3 : sem_hex_decoder
+  dec3 : d10_sem_hex_decoder
     port map(
       in_sem => sem2,
       hex_config => HEX2
     );
 
   -- ped3
-  dec4 : sem_hex_decoder
+  dec4 : d10_sem_hex_decoder
     port map(
       in_sem => ped3,
       hex_config => HEX1
     );
-  dec5 : sem_hex_decoder
+  dec5 : d10_sem_hex_decoder
     port map(
       in_sem => ped3,
       hex_config => HEX0

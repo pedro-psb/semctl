@@ -31,7 +31,7 @@ architecture testbench of tb_somador_signed is
     i_signed := TO_SIGNED(i, a'length);
     j_signed := TO_SIGNED(j, a'length);
     if not actual = result then
-      report "FALHA: " & to_string(i_signed) & "+" & to_string(j_signed) & "!=" & to_string(output) & ". Esperava: " & to_string(result)
+      report "FALHOU"
         severity failure;
     else
     end if;

@@ -32,7 +32,7 @@ architecture testbench of tb_subtrator_sign is
     i_unsigned := TO_UNSIGNED(i, a'length);
     j_unsigned := TO_UNSIGNED(j, a'length);
     if not (actual = expected) then
-      report "FALHA: " & to_string(i_unsigned) & "-" & to_string(j_unsigned) & "!=" & to_string(output) & ". Esperava: " & to_string(expected)
+      report "FALHOU"
         severity failure;
     end if;
   end procedure;

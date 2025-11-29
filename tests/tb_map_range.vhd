@@ -12,14 +12,15 @@ END ENTITY tb_map_range;
 
 ARCHITECTURE behavioral OF tb_map_range IS
     
-    CONSTANT N_BITS_TB : INTEGER := 10;
+    CONSTANT N_BITS_TB : INTEGER := 7;
     CONSTANT M_BITS_TB : INTEGER := 5;
+    
 
     SIGNAL tb_done : BOOLEAN := FALSE;
 
     COMPONENT map_range
         GENERIC (
-            N : INTEGER := 10;
+            N : INTEGER := 7;
             M : INTEGER := 5
         );
         PORT (
@@ -50,42 +51,42 @@ BEGIN
     BEGIN
         -- Estímulos para o teste
         e0_tb <= '0';
-        a_tb <= "0011111010";  -- 250 de 511
+        a_tb <= "1000001";  -- -63
         wait for 10 ns;
         
-        a_tb <= "0001111000";  -- 120 de 511
+        a_tb <= "0001111";  -- 15
         wait for 10 ns;
         
-        a_tb <= "0111111111";  -- 511 de 511
+        a_tb <= "0111111";  -- 63
         wait for 10 ns;
         
-        a_tb <= "1000000001";  -- 511 negativo de 511
+        a_tb <= "0011110";  -- 30
         wait for 10 ns;
         
-        a_tb <= "1100000110";  -- 250 negativo de 511
+        a_tb <= "1100010";  -- -30
         wait for 10 ns;
         
-        a_tb <= "1110001000";  -- 120 negativo de 511
+        a_tb <= "1110001";  -- -15
         wait for 10 ns;
         
         -- Alteração do sinal e0_tb
         e0_tb <= '1';
-        a_tb <= "0011111010";  -- 250 de 511
+        a_tb <= "1000001";  -- -63
         wait for 10 ns;
         
-        a_tb <= "0001111000";  -- 120 de 511
+        a_tb <= "0001111";  -- 15
         wait for 10 ns;
         
-        a_tb <= "0111111111";  -- 511 de 511
+        a_tb <= "0111111";  -- 63
         wait for 10 ns;
         
-        a_tb <= "1000000001";  -- 511 negativo de 511
+        a_tb <= "0011110";  -- 30
         wait for 10 ns;
         
-        a_tb <= "1100000110";  -- 250 negativo de 511
+        a_tb <= "1100010";  -- -30
         wait for 10 ns;
         
-        a_tb <= "1110001000";  -- 120 negativo de 511
+        a_tb <= "1110001";  -- -15
         wait for 10 ns;
         
         wait;

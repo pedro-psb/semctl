@@ -150,7 +150,7 @@ begin
     );
   dec3 : d10_sem_hex_decoder
     port map(
-      in_sem => sem2,
+      in_sem => ped2,
       hex_config => HEX2
     );
 

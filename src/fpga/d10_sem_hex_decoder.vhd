@@ -7,7 +7,7 @@
 -- |  |_|   || |_| |     |  _  |     | 1 - fechado
 -- |  |_|   || |   |     |     |  _  | 2 - amarelo
 -- | -------||-----|-----|-----|-----| 3 - aberto
--- | estado || 0   | 1   | 2   | 3   |
+-- | estado || 00  | 01  | 10  | 11  |
 --
 
 library IEEE;
@@ -24,10 +24,12 @@ end entity;
 architecture dataflow of d10_sem_hex_decoder is
 begin
   display_config <=
-    -- in order: (6 5 ... 0)
-    "1110011" when sem_state = "00" else
-    "0000001" when sem_state = "01" else
-    "1000000" when sem_state = "10" else
-    "0001000" when sem_state = "11" else
-    "0000000";
+    -- O vetor corresponde aos sinais (6 5 ... 0) do display 7-segmentos
+    -- Os numeros 0..6 correspondem a pauzinhos especificos do display (ver documentacao)
+    -- O pauzinho acende no valor '0'!
+    not "1110011" when sem_state = "00" else
+    not "0000001" when sem_state = "01" else
+    not "1000000" when sem_state = "10" else
+    not "0001000" when sem_state = "11" else
+    not "0000000";
 end architecture;

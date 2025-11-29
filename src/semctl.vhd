@@ -60,7 +60,6 @@ begin
     end if;
   end process fsm_sync;
 
-  X <= '1'; -- para teste preliminar onde controlamos o clk com um switch
 
   fsm_comb: process(PS) is
     constant PISC : STD_LOGIC_VECTOR(1 downto 0) := "00";
@@ -75,7 +74,8 @@ begin
         sem1 <= PISC; ped1 <= PISC;
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
-        X <= '0';
+        -- X <= '0';
+        X <= '1';  -- so para efeitos de teste
         polaridade <= '1';
       when MADR =>
         if X = '1' then NS <= ALL_CLOSED; end if;
@@ -95,6 +95,7 @@ begin
 
       -- ciclo direita
       when PRE_SEM2_OPEN =>
+        polaridade <= not polaridade;  -- inverte
         if X = '1' then NS <= SEM2_OPEN; end if;
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= AMAR;
@@ -107,12 +108,12 @@ begin
       when POS_SEM2_OPEN =>
         if X = '1' then NS <= ALL_CLOSED; end if;
         sem1 <= VERM; ped1 <= VERD;
-        sem2 <= PISC; ped2 <= VERM;
+        sem2 <= AMAR; ped2 <= VERM;
         ped3 <= VERM;
-        polaridade <= not polaridade;  -- inverte
 
       -- ciclo esquerda
       when PRE_SEM1_OPEN =>
+        polaridade <= not polaridade;  -- inverte
         if X = '1' then NS <= SEM1_OPEN; end if;
         sem1 <= VERM; ped1 <= AMAR;
         sem2 <= VERM; ped2 <= VERD;
@@ -127,7 +128,6 @@ begin
         sem1 <= AMAR; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
-        polaridade <= not polaridade;  -- inverte
 
       -- Others
       when others =>

@@ -1,0 +1,27 @@
+---
+name: CI
+
+on:
+  pull_request:
+    branches: ["*"]
+
+# Cancel previous runs if a new one is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup GHDL
+        uses: ghdl/setup-ghdl@v1
+        with:
+          backend: llvm
+
+      - name: Run lint
+        run: make lint

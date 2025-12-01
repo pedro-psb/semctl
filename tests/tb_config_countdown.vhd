@@ -2,7 +2,10 @@
 -- * Guilherme Augusto
 -- * Pedro Armando
 -- * Pedro Pessoa
+<<<<<<< HEAD
 -- arquivo correto
+=======
+>>>>>>> upstream/main
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -98,4 +101,8 @@ begin
 
     end process;
 
+<<<<<<< HEAD
 end architecture;
+=======
+end architecture;
+>>>>>>> upstream/main

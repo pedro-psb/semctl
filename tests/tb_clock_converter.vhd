@@ -2,9 +2,12 @@
 -- * Guilherme Augusto
 -- * Pedro Armando
 -- * Pedro Pessoa
+<<<<<<< HEAD
 -- arquivo correto
 
 -- Testbench 
+=======
+>>>>>>> upstream/main
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -22,7 +25,11 @@ architecture test of tb_clock_converter is
     signal s_rst : std_logic;
 	
 begin 
+<<<<<<< HEAD
 	UUT: entity work.clock_converter(dataflow)
+=======
+	UUT: entity work.clock_converter(behavioral)
+>>>>>>> upstream/main
     	generic map (
         	DIV_FACTOR => C_DIV_FACTOR
         )
@@ -51,8 +58,13 @@ begin
       	wait for 5*C_CLK_PERIOD;
       	s_rst <= '0';
 		wait for 50*C_CLK_PERIOD;
+<<<<<<< HEAD
  	 	s_rst <= '1';
 		wait for 200*C_CLK_PERIOD;
+=======
+ 	 	-- s_rst <= '1';
+		-- wait for 200*C_CLK_PERIOD;
+>>>>>>> upstream/main
 
   		report "Fim da simulação" severity note; 
 
@@ -60,4 +72,8 @@ begin
         
 	end process estimulo_proc;
     
+<<<<<<< HEAD
 end architecture test;
+=======
+end architecture test;
+>>>>>>> upstream/main

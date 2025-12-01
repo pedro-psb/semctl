@@ -9,8 +9,8 @@ use ieee.numeric_std.all;
 
 entity somador is 
     generic (
-        N_BITS : integer := 8;
-        M_BITS : integer := 4
+        N_BITS : integer := 63;
+        M_BITS : integer := 6
     );
     port (
         data_in : in  std_logic_vector(N_BITS-1 downto 0);

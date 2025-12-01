@@ -17,6 +17,7 @@
 -- * Guilherme Augusto
 -- * Pedro Armando
 -- * Pedro Pessoa
+-- arquivo correto
 
 library IEEE;
 use IEEE.std_logic_1164.all;

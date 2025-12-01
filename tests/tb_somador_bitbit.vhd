@@ -2,6 +2,7 @@
 -- * Guilherme Augusto
 -- * Pedro Armando
 -- * Pedro Pessoa
+-- arquivo correto
 
 library ieee;
 use ieee.std_logic_1164.all;

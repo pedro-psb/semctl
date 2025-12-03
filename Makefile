@@ -10,3 +10,7 @@ lint:
 	ghdl syntax src/**/*.vhd **/*.vhd
 
 
+.PHONY: lint
+clean:
+	rm -f tb_* *.vcd *.cf *.o
+

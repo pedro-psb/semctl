@@ -7,9 +7,8 @@
 --
 -- Entradas:
 --   clk : clock
---   rst : reset síncrono
---   set : quando '1', grava N como o valor de recarga
---   N   : valor que será carregado quando set='1'
+--   rst : quando '1', força a saída X a 0
+--   N   : valor que será carregado quando rst='0'
 --
 -- Saída:
 --   X   : valor atual do contador
@@ -19,55 +18,47 @@
 -- * Pedro Armando
 -- * Pedro Pessoa
 
-library IEEE;
-use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all; 
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity config_countdown is
-	generic (
-    	WIDTH : integer := 16 --16 nesse caso é a largura de N (entrada)
+    generic (
+        WIDTH : integer := 16
     );
-    port (
-    	clk : in std_logic;
-        rst : in std_logic;
-        set : in std_logic;
-        N : in  unsigned(WIDTH-1 downto 0);
-        X : out  unsigned(WIDTH-1 downto 0) --saida
+    port(
+        clk   : in std_logic;
+        reset : in std_logic;
+        N     : in unsigned(WIDTH-1 downto 0);
+        X     : out unsigned(WIDTH-1 downto 0)
     );
-end entity;
+end config_countdown;
 
-architecture rtl of config_countdown is 
-	signal valor_atual : unsigned(WIDTH-1 downto 0) := (others => '0');
-   	signal proximo_valor : unsigned(WIDTH-1 downto 0) := (others => '0');
-begin 
-	
-    process(clk) 
+architecture simple of config_countdown is
+    signal count : unsigned(WIDTH-1 downto 0) := (others => '0');
+begin
+
+    process(clk)
     begin
-    	if rising_edge(clk) then 
-        	-- O RST sincronizado: limpa tudo:
-            if rst = '1' then
-            	valor_atual <= (others => '0');
-                proximo_valor <= (others => '0');
-          	else
-            
-                -- SET sincronizado: atualiza próximo valor
-                if set = '1' then 
-                    proximo_valor <= N;
-                    valor_atual   <= N;
-                end if;
+        if rising_edge(clk) then
+            if reset = '1' then
+                -- zera contador
+                count <= (others => '0');
 
-                -- comportamento do contador regressivo
-                if valor_atual = to_unsigned(0, width) then
-                    valor_atual <= proximo_valor; --reinicia o ciclo com o valor armazenado em proximo_valor
+            else
+                -- comportamento do countdown sem SET:
+                -- se chegou em zero -> recarrega N
+                -- senao           -> decrementa
+                if count = 0 then
+                    count <= N;
                 else
-                    valor_atual <= valor_atual - 1; --decrementa
+                    count <= count - 1;
                 end if;
-                
-            end if;
-            
-        end if;
-	end process;
-    
-X <= valor_atual;     
 
-end architecture;    
+            end if;
+        end if;
+    end process;
+
+    X <= count;
+
+end architecture simple;

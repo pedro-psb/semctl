@@ -38,15 +38,15 @@ rm -rf work/*
 
 # Step 1: Import/analyze all VHDL files
 echo "1. Analyzing VHDL files..."
-ghdl -i --std=08 --workdir=work src/components/*.vhd tests/$TESTNAME.vhd
+ghdl -i --workdir=work src/*.vhd src/components/*.vhd tests/$TESTNAME.vhd
 
 # Step 2: Elaborate the testbench
 echo "2. Elaborating testbench..."
-ghdl -m --std=08 --workdir=work $TESTNAME
+ghdl -m --workdir=work $TESTNAME
 
 # Step 3: Run simulation with waveform generation
 echo "3. Running simulation..."
-ghdl -r --std=08 --workdir=work $TESTNAME --vcd=$TESTNAME.vcd
+ghdl -r --workdir=work $TESTNAME --vcd=$TESTNAME.vcd
 
 echo ""
 echo "Simulation completed successfully!"

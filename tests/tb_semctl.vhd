@@ -20,14 +20,19 @@ architecture testbench of tb_semctl is
       );
     end component;
 
+    -- sinais to testbench
     signal clk, rst :  std_logic;
     signal out_fsm :  std_logic_vector(9 downto 0);
-    signal in_mad, in_car1, in_car2 :  std_logic;
+    signal in_mad, in_car1, in_car2 :  std_logic := '0';
     signal sem1 : std_logic_vector(1 downto 0);
     signal sem2 : std_logic_vector(1 downto 0);
     signal ped1 : std_logic_vector(1 downto 0);
     signal ped2 : std_logic_vector(1 downto 0);
     signal ped3 : std_logic_vector(1 downto 0);
+
+    -- sinais auxiliares
+    signal clk_enable: std_logic := '1';
+    constant CLK_PERIOD : time := 10 ns;
 begin
     uut: semctl
         port map (
@@ -43,4 +48,36 @@ begin
             ped2  => ped2,
             ped3  => ped3
         );
+
+    clk_process: process
+    begin
+        clk <= '0';
+        wait for CLK_PERIOD/2;
+        while clk_enable = '1' loop
+            clk <= '0';
+            wait for CLK_PERIOD/2;
+            clk <= '1';
+            wait for CLK_PERIOD/2;
+        end loop;
+        wait;
+    end process;
+
+    test_process: process
+    begin
+        -- fazer rst
+        rst <= '1';
+        wait for CLK_PERIOD/2;
+
+        wait for 1 * CLK_PERIOD; 
+        rst <= '0';
+        in_mad <= '1';
+
+        wait for 3 * CLK_PERIOD; 
+        in_mad <= '0';
+
+        wait for 15 * CLK_PERIOD;
+        
+        clk_enable <= '0'; 
+        wait;
+    end process;
 end architecture testbench;

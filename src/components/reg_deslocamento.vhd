@@ -5,7 +5,6 @@
 -- input:
 --   in_car: 1 bit
 --   clk: 1 bit
---   enable: 1 bit
 --   rst: 1 bit
 -- output:
 --   output: N bits  (e.g  N=10,  0100001001)
@@ -23,7 +22,7 @@ library ieee;
 entity reg_deslocamento is
   generic (N : integer := 64);
   port (
-    in_car, clk, rst, enable : in  std_logic;
+    in_car, clk, rst: in  std_logic;
     output : out std_logic_vector(N-1 downto 0)
   );
 end entity;
@@ -32,7 +31,7 @@ end entity;
 architecture structural of reg_deslocamento  is
   component reg is
     port (
-      data_in, clk, rst, enable : in  std_logic;
+      data_in, clk, rst: in  std_logic;
       data_out : out std_logic
     );
   end component;
@@ -47,7 +46,6 @@ begin
         data_in => tmp_reg(i+1),
         data_out => tmp_reg(i),
         clk => clk,
-        enable => enable,
         rst => rst
       );
   end generate;

@@ -3,7 +3,6 @@
 -- input:
 --   data_in: 1 bit
 --   clk: 1 bit
---   enable: 1 bit
 --   rst: 1 bit
 -- output:
 --   data_out: 1
@@ -15,7 +14,7 @@ library ieee;
 
 entity reg is
   port (
-    data_in, clk, rst, enable : in  std_logic;
+    data_in, clk, rst: in  std_logic;
     data_out : out std_logic
   );
 end entity;
@@ -25,7 +24,7 @@ architecture behavoral of reg  is
 begin
   process(clk, rst) is
   begin
-    if (rising_edge(clk) and enable = '1') then
+    if (rising_edge(clk)) then
       data_out <= data_in;
     elsif (rst = '1') then
       data_out <= '0';

@@ -10,7 +10,12 @@ lint:
 	ghdl syntax src/**/*.vhd **/*.vhd
 
 
-.PHONY: lint
+.PHONY: test
+test:
+	./run_test.sh tb_semctl
+
+
+.PHONY: clean
 clean:
 	rm -f tb_* *.vcd *.cf *.o
 

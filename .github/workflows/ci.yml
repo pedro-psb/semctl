@@ -25,3 +25,19 @@ jobs:
 
       - name: Run lint
         run: make lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    name: Test Code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup GHDL
+        uses: ghdl/setup-ghdl@v1
+        with:
+          backend: llvm
+
+      - name: Run test
+        run: make test

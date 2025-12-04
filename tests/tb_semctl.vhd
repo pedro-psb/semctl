@@ -64,19 +64,56 @@ begin
 
     test_process: process
     begin
-        -- fazer rst
+        -- Testando Reset
         rst <= '1';
         wait for CLK_PERIOD/2;
+        assert out_fsm = "1000000000"; -- estado inicial
 
         wait for 1 * CLK_PERIOD; 
+        assert out_fsm = "1000000000";
         rst <= '0';
         in_mad <= '1';
 
+        -- Testando Modo Madrugada
+        wait for 1 * CLK_PERIOD; 
+        assert out_fsm = "0100000000"; -- estado madrugada
+
         wait for 3 * CLK_PERIOD; 
+        assert out_fsm = "0100000000";
         in_mad <= '0';
 
-        wait for 15 * CLK_PERIOD;
+        -- Agora que o modo madrugada foi desligado, comeca o ciclo normal
+        -- Faz o loop duas vezes para garantir consistencia
+
+        for i in 2 downto 1 loop
+
+            -- ciclo polaridade=1 (para direita)
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000001000";
         
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000000100";
+
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000000010";
+
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000000001";
+
+            -- ciclo polaridade=0 (para esquerda)
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000001000";
+
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000010000";
+
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0000100000";
+
+            wait for 1 * CLK_PERIOD;
+            assert out_fsm = "0001000000";
+        end loop;
+
         clk_enable <= '0'; 
         wait;
     end process;

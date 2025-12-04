@@ -25,8 +25,8 @@ architecture testbench of tb_reg_deslocamento is
             N : integer := 4
         );
         port (
-            in_car, clk, rst, enable : in  std_logic;
-            output : out std_logic_vector(N-1 downto 0)
+            in_car, clk, rst : in  std_logic;
+            reg_out : out std_logic_vector(N-1 downto 0)
         );
     end component;
 
@@ -34,7 +34,6 @@ architecture testbench of tb_reg_deslocamento is
     signal in_car_tb : std_logic := '0';
     signal clk_tb    : std_logic := '0';
     signal rst_tb    : std_logic := '0';
-    signal enable_tb    : std_logic := '1';
     signal output_tb : std_logic_vector(N-1 downto 0);
 
 
@@ -61,8 +60,7 @@ begin
             in_car => in_car_tb,
             clk    => clk_tb,
             rst    => rst_tb,
-            enable => enable_tb,
-            output => output_tb
+            reg_out => output_tb
         );
 
     -- Processo do clock
@@ -140,18 +138,6 @@ begin
         -- ENABLE mantem valor congelado
         report "";
         report "Testando enable='0' mantem valor congelado";
-        check_output("1001", output_tb, "Sequencia 11111");
-
-        enable_tb <= '0';
-        wait for CLK_PERIOD;
-        check_output("1001", output_tb, "Sequencia 11111");
-
-        enable_tb <= '0';
-        wait for CLK_PERIOD;
-        check_output("1001", output_tb, "Sequencia 11111");
-
-        enable_tb <= '0';
-        wait for CLK_PERIOD;
         check_output("1001", output_tb, "Sequencia 11111");
 
         report "";

@@ -1,4 +1,4 @@
--- Implementação do semctl para FPGA DE10
+-- Sensor Processor
 --
 -- DE10-Lite FPGA Board Template
 -- ==============================
@@ -52,7 +52,7 @@ library IEEE;
   use IEEE.NUMERIC_STD.ALL;
 
 
-entity d10_semtctl is port (
+entity de10_sensor_processor is port (
     CLOCK_50 : in  std_logic;                -- Clock 50MHz
     KEY : in std_logic_vector(1 downto 0);   -- Push buttons (active low)
     SW : in std_logic_vector(9 downto 0);    -- Slide switches
@@ -66,105 +66,85 @@ entity d10_semtctl is port (
   ); end entity;
 
 
-architecture structural of d10_semtctl
+architecture structural of de10_sensor_processor
 is
   -- Components
-  component d10_sem_hex_decoder is
+  component sensor_processor is
+    generic (
+      out_size : integer := 4;
+      mem_size : integer := 10
+    );
     port (
-      sem_state : in  std_logic_vector(1 downto 0);
-      display_config : out std_logic_vector(6 downto 0)
+      car1_in    :  in std_logic;
+      car1_enable  :  in std_logic;
+      car2_in    :  in std_logic;
+      car2_enable  :  in std_logic;
+      rst      :  in std_logic;
+      enable    :  in std_logic;
+      polaridade  :  in std_logic;
+      clk      :  in std_logic;
+      data_out    :   out signed(out_size-1 downto 0)
     );
   end component;
 
-  component semctl is
-    port (
-      clk, rst : in  std_logic;
-      out_fsm : out  std_logic_vector(9 downto 0);
-
-      in_mad, in_car1, in_car2 : in  std_logic;
-      sem1 : out std_logic_vector(1 downto 0);
-      sem2 : out std_logic_vector(1 downto 0);
-      ped1 : out std_logic_vector(1 downto 0);
-      ped2 : out std_logic_vector(1 downto 0);
-      ped3 : out std_logic_vector(1 downto 0)
-    );
-  end component;
-
+  component clock_converter is
+      generic (
+          DIV_FACTOR : integer := 50000 --50000 valor default
+      );
+      port (
+          in_clk  : in  std_logic;
+          out_clk : out std_logic;
+          RST     : in  std_logic
+      );
+  end component clock_converter;
   -- Internal signals
-  signal clk, rst: std_logic;
-  signal out_fsm : STD_LOGIC_VECTOR(9 downto 0);
-  signal in_mad, in_car1, in_car2: std_logic;
-  signal sem1, sem2, ped1, ped2, ped3 : STD_LOGIC_VECTOR(1 downto 0);
-
-  constant N : integer := 3;
-  signal a, b, sum : std_logic_vector(N-1 downto 0);
-  signal cout : std_logic;
+      constant out_size : integer := 4;
+      signal car1_in    : std_logic;
+      signal car1_enable  : std_logic;
+      signal car2_in    : std_logic;
+      signal car2_enable  : std_logic;
+      signal rst      : std_logic;
+      signal enable    : std_logic;
+      signal polaridade  : std_logic;
+      signal clk      : std_logic;
+      signal data_out    : signed(out_size-1 downto 0);
+      signal resized_clock : STD_LOGIC;
 begin
+
+  clock_converter_inst: clock_converter
+   generic map(
+      DIV_FACTOR => 5000000 -- 1s
+  )
+   port map(
+      in_clk => CLOCK_50,
+      out_clk => resized_clock,
+      RST => RST
+  );
   -- COMPONENTE PRINCIPAL
-  main: semctl
+  main_ins: sensor_processor
     port map (
       -- sinais gerais
-      clk => clk,
+      clk => clock_50,
       rst => rst,
-      out_fsm => out_fsm,
+      enable => enable,
+      polaridade => polaridade,
       -- sinais especificos
-      in_mad => in_mad,
-      in_car1 => in_car1,
-      in_car2 => in_car2,
-      sem1 => sem1,
-      sem2 => sem2,
-      ped1 => ped1,
-      ped2 => ped2,
-      ped3 => ped3
+      car1_in => car1_in,
+      car1_enable => car1_enable,
+      car2_in => car2_in,
+      car2_enable => car2_enable,
+      data_out => data_out
     );
 
-  -- INPUTS
-  -- clk <= CLOCK_50;
-  clk <= SW(9); -- clock manual
-  rst <= SW(8);
+    car1_enable <= SW(0);
+    car2_enable <= SW(1);
+    car1_in <= KEY(0);
+    car2_in <= KEY(1);
+    enable <= SW(9); -- na ponta esquerda
+    rst <= SW(8);
+    polaridade <= SW(7);
+    LEDR(3 downto 0) <= STD_LOGIC_VECTOR(data_out);
 
-  in_car1 <= KEY(0);
-  in_car2 <= KEY(1);
-  in_mad <= SW(0);
-
-  -- OUTPUTS
-  LEDR <= out_fsm;
-
-  -- sem1 + ped1
-  dec0 : d10_sem_hex_decoder
-    port map(
-      sem_state => sem1,
-      display_config => HEX5
-    );
-  dec1 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped1,
-      display_config => HEX4
-    );
-
-  -- sem2 + ped2
-  dec2 : d10_sem_hex_decoder
-    port map(
-      sem_state => sem2,
-      display_config => HEX3
-    );
-  dec3 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped2,
-      display_config => HEX2
-    );
-
-  -- ped3
-  dec4 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped3,
-      display_config => HEX1
-    );
-  dec5 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped3,
-      display_config => HEX0
-    );
 
 end architecture;
 

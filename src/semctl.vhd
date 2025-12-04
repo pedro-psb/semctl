@@ -43,6 +43,17 @@ end entity;
 
 architecture structural of semctl is
   -- componentes
+  component clock_converter is
+    generic (
+      DIV_FACTOR : integer := 50000
+    );
+    port (
+      in_clk  : in  std_logic;
+      out_clk : out std_logic;
+      RST     : in  std_logic
+    );
+  end component;
+
   component bloco_controle is
     port (
       clk, rst : in  std_logic;
@@ -61,15 +72,67 @@ architecture structural of semctl is
     );
   end component;
 
+  component bloco_operacional is
+    generic (
+      mem_size : integer := 60;
+      out_size : integer := 5
+    );
+    port (
+      in_car1      : in  std_logic;
+      in_car2      : in  std_logic;
+      car1_enable  : in  std_logic;
+      car2_enable  : in  std_logic;
+      polaridade   : in  std_logic;
+      default_time : in  unsigned(4 downto 0);
+      enable       : in  std_logic;
+      rst          : in  std_logic;
+      clk_1s       : in  std_logic;
+      clk_1000hz   : in  std_logic;
+      count_done   : out std_logic;
+      count_value  : out unsigned(4 downto 0)
+    );
+  end component;
+
   -- conexoes inter-componente
-  signal count_done: std_logic := '1';
+  signal count_done: std_logic;
+  signal count_value: unsigned(4 downto 0);
   signal car1_enable: std_logic;
   signal car2_enable: std_logic;
   signal polaridade_out: std_logic;
+
+  -- sinais de clock
+  signal clk_1s: std_logic;        -- 1 Hz (1s period)
+  signal clk_1000hz: std_logic;    -- 1000 Hz (0.001s period)
+
+  -- constante para tempo padrão
+  constant default_time_const : unsigned(4 downto 0) := "00111"; -- 7s
 begin
-  datapath : bloco_controle
+  -- Instâncias dos conversores de clock
+  -- Clock de 1s (1 Hz) para bloco_operacional e bloco_controle
+  clk_conv_1s : clock_converter
+  generic map(
+    DIV_FACTOR => 25000000  -- 50MHz / (2 * 1Hz) = 25M
+  )
   port map(
-    clk => clk,
+    in_clk => clk,
+    out_clk => clk_1s,
+    RST => rst
+  );
+
+  -- Clock de 0.001s (1000 Hz) para bloco_controle
+  clk_conv_1000hz : clock_converter
+  generic map(
+    DIV_FACTOR => 25000  -- 50MHz / (2 * 1000Hz) = 25K
+  )
+  port map(
+    in_clk => clk,
+    out_clk => clk_1000hz,
+    RST => rst
+  );
+
+  controle_inst : bloco_controle
+  port map(
+    clk => clk_1s,
     rst => rst,
     in_mad => in_mad,
     in_car1 => in_car1,
@@ -85,4 +148,25 @@ begin
     car2_enable => car2_enable,
     polaridade_out => polaridade_out
   );
+
+  operacional_inst : bloco_operacional
+  generic map(
+    mem_size => 60,
+    out_size => 5
+  )
+  port map(
+    in_car1 => in_car1,
+    in_car2 => in_car2,
+    car1_enable => car1_enable,
+    car2_enable => car2_enable,
+    polaridade => polaridade_out,
+    default_time => default_time_const,
+    enable => '1',
+    rst => rst,
+    clk_1s => clk_1s,
+    clk_1000hz => clk_1000hz,
+    count_done => count_done,
+    count_value => count_value
+  );
+
 end architecture;

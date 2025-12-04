@@ -19,8 +19,8 @@ use  ieee.numeric_std.all;
 
 entity somador_bitbit is
 	generic (
-      N_in : integer := 8;
-      N_out : integer := 4
+      N_in : integer := 64;
+      N_out : integer := 6
     );
 
     port (

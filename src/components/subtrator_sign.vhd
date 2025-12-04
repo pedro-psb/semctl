@@ -20,7 +20,7 @@ library ieee;
 
 
 entity subtrator_sign is
-  generic (N : integer := 4);
+  generic (N : integer := 6);
   port (
     a, b : in  unsigned(N-1 downto 0);
     inverte: in std_logic;

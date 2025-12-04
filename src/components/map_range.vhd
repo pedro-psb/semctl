@@ -40,7 +40,7 @@ signal saida: std_logic_vector(M-1 downto 0);--signal para saida
 BEGIN
 
   -- Caso os valores de M e N sejam alterados, substituir 2 pela diferença entre M e N
-  saida <= std_logic_vector(a(N-1 downto 2));
+  saida <= std_logic_vector(a(N-1 downto N-M));
   
   en0 <= (others => e0);     	--Enable em um código dataflow
   

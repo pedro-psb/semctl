@@ -13,6 +13,7 @@ lint:
 .PHONY: test
 test:
 	./run_test.sh tb_semctl
+	./run_test.sh tb_reg_deslocamento
 
 
 .PHONY: clean

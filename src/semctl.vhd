@@ -27,7 +27,7 @@ library IEEE;
 entity semctl is
   port (
     -- sinais gerais
-    clk, rst : in  std_logic;
+    clk_10ms, rst : in  std_logic;
     out_fsm : out  std_logic_vector(9 downto 0);
 
     -- sinais especificos
@@ -102,33 +102,27 @@ architecture structural of semctl is
 
   -- sinais de clock
   signal clk_1s: std_logic;        -- 1 Hz (1s period)
-  signal clk_1000hz: std_logic;    -- 1000 Hz (0.001s period)
+  signal clk_10ms_sig: std_logic;  -- 100 Hz (0.01s period) - same as input
 
   -- constante para tempo padrão
   constant default_time_const : unsigned(4 downto 0) := "00111"; -- 7s
+
+
 begin
   -- Instâncias dos conversores de clock
   -- Clock de 1s (1 Hz) para bloco_operacional e bloco_controle
   clk_conv_1s : clock_converter
   generic map(
-    DIV_FACTOR => 25000000  -- 50MHz / (2 * 1Hz) = 25M
+    DIV_FACTOR => 50  -- 100Hz / (2 * 1Hz) = 50
   )
   port map(
-    in_clk => clk,
+    in_clk => clk_10ms,
     out_clk => clk_1s,
     RST => rst
   );
 
-  -- Clock de 0.001s (1000 Hz) para bloco_controle
-  clk_conv_1000hz : clock_converter
-  generic map(
-    DIV_FACTOR => 25000  -- 50MHz / (2 * 1000Hz) = 25K
-  )
-  port map(
-    in_clk => clk,
-    out_clk => clk_1000hz,
-    RST => rst
-  );
+  -- Clock de 10ms (100 Hz) - pass through input clock (no conversion needed)
+  clk_10ms_sig <= clk_10ms;
 
   controle_inst : bloco_controle
   port map(
@@ -164,7 +158,7 @@ begin
     enable => '1',
     rst => rst,
     clk_1s => clk_1s,
-    clk_1000hz => clk_1000hz,
+    clk_1000hz => clk_10ms_sig,
     count_done => count_done,
     count_value => count_value
   );

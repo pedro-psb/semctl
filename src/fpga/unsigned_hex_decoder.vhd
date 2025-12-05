@@ -33,7 +33,7 @@ architecture dataflow of unsigned_hex_decoder is
 begin
   display_config <=
                     -- O vetor corresponde aos sinais (6 5 4 3 2 1 0) do display 7-segmentos
-                    -- Mapping: 0=top, 1=top-right, 2=bottom-right, 3=bottom, 4=bottom-left, 5=top-left, 6=middle
+                    -- Mapeamento: 0=topo, 1=direita-superior, 2=direita-inferior, 3=fundo, 4=esquerda-inferior, 5=esquerda-superior, 6=meio
                     -- O pauzinho acende no valor '0'! (active low)
                     not "1000000" when unsigned_value = 0 else  -- 0: segments 0,1,2,3,4,5
                     not "1111001" when unsigned_value = 1 else  -- 1: segments 1,2

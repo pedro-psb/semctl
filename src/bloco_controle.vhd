@@ -103,8 +103,8 @@ begin
     constant AMAR : STD_LOGIC_VECTOR(1 downto 0) := "10";
     constant VERD : STD_LOGIC_VECTOR(1 downto 0) := "11";
   begin
-    -- Default assignments
-    NS <= PS;  -- Stay in current state by default
+    -- Atribuições padrão
+    NS <= PS;  -- Permanece no estado atual por padrão
     case PS is
       -- especiais
       when INITIAL =>
@@ -186,7 +186,7 @@ begin
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
 
-      -- Others
+      -- Outros
       when others =>
         if count_done = '1' then NS <= INITIAL; end if;
         sem1 <= PISC; ped1 <= PISC;

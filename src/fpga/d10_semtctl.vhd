@@ -21,9 +21,9 @@
 -- | -------||-----|-----|-----|-----| 3 - aberto
 -- | estado || 0   | 1   | 2   | 3   |
 --
--- Há 6 displays. O layour ficará assim:
--- * ( sem1 ped1 | sem2 ped2 | ped3 ped3 )
---   ( HEX5 HEX4 | HEX3 HEX2 | HEX1 HEX0 )
+-- Há 6 displays. O layout ficará assim:
+-- * ( sem1 ped1 | sem2 ped2 | ped3 count )
+--   ( HEX5 HEX4 | HEX3 HEX2 | HEX1 HEX0  )
 --
 -- Saida da FSM (debugging)
 -- ==============================
@@ -84,8 +84,10 @@ is
 
   component d10_sem_hex_decoder is
     port (
-      sem_state : in  std_logic_vector(1 downto 0);
-      display_config : out std_logic_vector(6 downto 0)
+      sem_state_up : in  std_logic_vector(1 downto 0);
+      sem_state_down : in  std_logic_vector(1 downto 0);
+      display_config_up : out std_logic_vector(6 downto 0);
+      display_config_down : out std_logic_vector(6 downto 0)
     );
   end component;
 
@@ -99,7 +101,16 @@ is
       sem2 : out std_logic_vector(1 downto 0);
       ped1 : out std_logic_vector(1 downto 0);
       ped2 : out std_logic_vector(1 downto 0);
-      ped3 : out std_logic_vector(1 downto 0)
+      ped3 : out std_logic_vector(1 downto 0);
+
+      count_value : out unsigned(4 downto 0)
+    );
+  end component;
+
+  component unsigned_hex_decoder is
+    port (
+      unsigned_value : in  unsigned(3 downto 0);
+      display_config : out std_logic_vector(6 downto 0)
     );
   end component;
 
@@ -108,6 +119,7 @@ is
   signal out_fsm : STD_LOGIC_VECTOR(9 downto 0);
   signal in_mad, in_car1, in_car2: std_logic;
   signal sem1, sem2, ped1, ped2, ped3 : STD_LOGIC_VECTOR(1 downto 0);
+  signal count_value : unsigned(4 downto 0);
 
   constant N : integer := 3;
   signal a, b, sum : std_logic_vector(N-1 downto 0);
@@ -139,7 +151,8 @@ begin
       sem2 => sem2,
       ped1 => ped1,
       ped2 => ped2,
-      ped3 => ped3
+      ped3 => ped3,
+      count_value => count_value
     );
 
   -- INPUTS
@@ -154,39 +167,37 @@ begin
   -- OUTPUTS
   LEDR <= out_fsm;
 
-  -- sem1 + ped1
+  -- sem1 + ped1: sem1 on HEX5, ped1 on HEX4
   dec0 : d10_sem_hex_decoder
     port map(
-      sem_state => sem1,
-      display_config => HEX5
+      sem_state_up => sem1,
+      sem_state_down => ped1,
+      display_config_up => HEX5,
+      display_config_down => HEX4
     );
+
+  -- sem2 + ped2: sem2 on HEX3, ped2 on HEX2
   dec1 : d10_sem_hex_decoder
     port map(
-      sem_state => ped1,
-      display_config => HEX4
+      sem_state_up => sem2,
+      sem_state_down => ped2,
+      display_config_up => HEX3,
+      display_config_down => HEX2
     );
 
-  -- sem2 + ped2
+  -- ped3: ped3 on HEX1, and count value on HEX0
   dec2 : d10_sem_hex_decoder
     port map(
-      sem_state => sem2,
-      display_config => HEX3
-    );
-  dec3 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped2,
-      display_config => HEX2
+      sem_state_up => ped3,
+      sem_state_down => "00", -- unused, will show piscando
+      display_config_up => HEX1,
+      display_config_down => open  -- ignore lower output
     );
 
-  -- ped3
-  dec4 : d10_sem_hex_decoder
+  -- Clock count value display on HEX0 (using lower 4 bits of count_value)
+  count_decoder : unsigned_hex_decoder
     port map(
-      sem_state => ped3,
-      display_config => HEX1
-    );
-  dec5 : d10_sem_hex_decoder
-    port map(
-      sem_state => ped3,
+      unsigned_value => count_value(3 downto 0),
       display_config => HEX0
     );
 

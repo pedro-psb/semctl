@@ -7,7 +7,7 @@ help:
 
 .PHONY: lint
 lint:
-	ghdl syntax src/**/*.vhd **/*.vhd
+	ghdl syntax src/*.vhd src/components/*.vhd src/fpga/*.vhd tests/*.vhd
 
 
 .PHONY: test

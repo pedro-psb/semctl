@@ -115,56 +115,56 @@ begin
   -- Instâncias dos conversores de clock
   -- Clock de 1s (1 Hz) para bloco_operacional e bloco_controle
   clk_conv_1s : clock_converter
-  generic map(
-    DIV_FACTOR => 50  -- 100Hz / (2 * 1Hz) = 50
-  )
-  port map(
-    in_clk => clk_10ms,
-    out_clk => clk_1s,
-    RST => rst
-  );
+    generic map(
+      DIV_FACTOR => 50  -- 100Hz / (2 * 1Hz) = 50
+    )
+    port map(
+      in_clk => clk_10ms,
+      out_clk => clk_1s,
+      RST => rst
+    );
 
   -- Clock de 10ms (100 Hz) - pass through input clock (no conversion needed)
   clk_10ms_sig <= clk_10ms;
 
   controle_inst : bloco_controle
-  port map(
-    clk => clk_1s,
-    rst => rst,
-    in_mad => in_mad,
-    in_car1 => in_car1,
-    in_car2 => in_car2,
-    out_fsm => out_fsm,
-    sem1 => sem1,
-    sem2 => sem2,
-    ped1 => ped1,
-    ped2 => ped2,
-    ped3 => ped3,
-    count_done => count_done,
-    car1_enable => car1_enable,
-    car2_enable => car2_enable,
-    polaridade_out => polaridade_out
-  );
+    port map(
+      clk => clk_1s,
+      rst => rst,
+      in_mad => in_mad,
+      in_car1 => in_car1,
+      in_car2 => in_car2,
+      out_fsm => out_fsm,
+      sem1 => sem1,
+      sem2 => sem2,
+      ped1 => ped1,
+      ped2 => ped2,
+      ped3 => ped3,
+      count_done => count_done,
+      car1_enable => car1_enable,
+      car2_enable => car2_enable,
+      polaridade_out => polaridade_out
+    );
 
   operacional_inst : bloco_operacional
-  generic map(
-    mem_size => 60,
-    out_size => 5
-  )
-  port map(
-    in_car1 => in_car1,
-    in_car2 => in_car2,
-    car1_enable => car1_enable,
-    car2_enable => car2_enable,
-    polaridade => polaridade_out,
-    default_time => default_time_const,
-    enable => '1',
-    rst => rst,
-    clk_1s => clk_1s,
-    clk_1000hz => clk_10ms_sig,
-    count_done => count_done,
-    count_value => count_value_internal
-  );
+    generic map(
+      mem_size => 60,
+      out_size => 5
+    )
+    port map(
+      in_car1 => in_car1,
+      in_car2 => in_car2,
+      car1_enable => car1_enable,
+      car2_enable => car2_enable,
+      polaridade => polaridade_out,
+      default_time => default_time_const,
+      enable => '1',
+      rst => rst,
+      clk_1s => clk_1s,
+      clk_1000hz => clk_10ms_sig,
+      count_done => count_done,
+      count_value => count_value_internal
+    );
 
   -- Connect internal signal to output port
   count_value <= count_value_internal;

@@ -83,9 +83,9 @@ is
   end component;
 
   component d10_sem_hex_decoder is
-  port (
-    sem_in: in std_logic_vector(1 downto 0);
-    hex_out: out std_logic_vector(6 downto 0)
+    port (
+      sem_in: in std_logic_vector(1 downto 0);
+      hex_out: out std_logic_vector(6 downto 0)
     );
   end component;
 
@@ -125,14 +125,14 @@ is
 begin
   -- Clock generation: 50MHz -> 100Hz (10ms period)
   clk_conv_10ms : clock_converter
-  generic map(
-    DIV_FACTOR => 250000  -- 50MHz / (2 * 100Hz) = 250K
-  )
-  port map(
-    in_clk => CLOCK_50,
-    out_clk => clk_10ms,
-    RST => rst
-  );
+    generic map(
+      DIV_FACTOR => 250000  -- 50MHz / (2 * 100Hz) = 250K
+    )
+    port map(
+      in_clk => CLOCK_50,
+      out_clk => clk_10ms,
+      RST => rst
+    );
 
   -- COMPONENTE PRINCIPAL
   main: semctl

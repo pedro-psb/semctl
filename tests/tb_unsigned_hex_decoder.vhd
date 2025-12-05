@@ -4,8 +4,8 @@
 --
 
 library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std.all;
 
 entity tb_unsigned_hex_decoder is
 end entity tb_unsigned_hex_decoder;
@@ -27,15 +27,15 @@ architecture testbench of tb_unsigned_hex_decoder is
   -- Mapping: 0=top, 1=top-right, 2=bottom-right, 3=bottom, 4=bottom-left, 5=top-left, 6=middle
   type display_patterns_type is array (0 to 7) of std_logic_vector(6 downto 0);
   constant EXPECTED_PATTERNS : display_patterns_type := (
-    0 => not "1000000", -- 0: segments 0,1,2,3,4,5
-    1 => not "1111001", -- 1: segments 1,2
-    2 => not "0100100", -- 2: segments 0,1,6,4,3
-    3 => not "0110000", -- 3: segments 0,1,6,2,3
-    4 => not "0011001", -- 4: segments 5,6,1,2
-    5 => not "0010010", -- 5: segments 0,5,6,2,3
-    6 => not "0000010", -- 6: segments 0,5,6,4,3,2
-    7 => not "1111000"  -- 7: segments 0,1,2
-  );
+                                                          0 => not "1000000", -- 0: segments 0,1,2,3,4,5
+                                                          1 => not "1111001", -- 1: segments 1,2
+                                                          2 => not "0100100", -- 2: segments 0,1,6,4,3
+                                                          3 => not "0110000", -- 3: segments 0,1,6,2,3
+                                                          4 => not "0011001", -- 4: segments 5,6,1,2
+                                                          5 => not "0010010", -- 5: segments 0,5,6,2,3
+                                                          6 => not "0000010", -- 6: segments 0,5,6,4,3,2
+                                                          7 => not "1111000"  -- 7: segments 0,1,2
+                                                        );
 
 begin
 

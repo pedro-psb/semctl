@@ -88,38 +88,38 @@ is
   end component;
 
   component clock_converter is
-      generic (
-          DIV_FACTOR : integer := 50000 --50000 valor default
-      );
-      port (
-          in_clk  : in  std_logic;
-          out_clk : out std_logic;
-          RST     : in  std_logic
-      );
+    generic (
+      DIV_FACTOR : integer := 50000 --50000 valor default
+    );
+    port (
+      in_clk  : in  std_logic;
+      out_clk : out std_logic;
+      RST     : in  std_logic
+    );
   end component clock_converter;
   -- Internal signals
-      constant out_size : integer := 4;
-      signal car1_in    : std_logic;
-      signal car1_enable  : std_logic;
-      signal car2_in    : std_logic;
-      signal car2_enable  : std_logic;
-      signal rst      : std_logic;
-      signal enable    : std_logic;
-      signal polaridade  : std_logic;
-      signal clk      : std_logic;
-      signal data_out    : signed(out_size-1 downto 0);
-      signal resized_clock : STD_LOGIC;
+  constant out_size : integer := 4;
+  signal car1_in    : std_logic;
+  signal car1_enable  : std_logic;
+  signal car2_in    : std_logic;
+  signal car2_enable  : std_logic;
+  signal rst      : std_logic;
+  signal enable    : std_logic;
+  signal polaridade  : std_logic;
+  signal clk      : std_logic;
+  signal data_out    : signed(out_size-1 downto 0);
+  signal resized_clock : STD_LOGIC;
 begin
 
   clock_converter_inst: clock_converter
-   generic map(
+    generic map(
       DIV_FACTOR => 5000000 -- 1s
-  )
-   port map(
+    )
+    port map(
       in_clk => CLOCK_50,
       out_clk => resized_clock,
       RST => RST
-  );
+    );
   -- COMPONENTE PRINCIPAL
   main_ins: sensor_processor
     port map (
@@ -136,14 +136,14 @@ begin
       data_out => data_out
     );
 
-    car1_enable <= SW(0);
-    car2_enable <= SW(1);
-    car1_in <= KEY(0);
-    car2_in <= KEY(1);
-    enable <= SW(9); -- na ponta esquerda
-    rst <= SW(8);
-    polaridade <= SW(7);
-    LEDR(3 downto 0) <= STD_LOGIC_VECTOR(data_out);
+  car1_enable <= SW(0);
+  car2_enable <= SW(1);
+  car1_in <= KEY(0);
+  car2_in <= KEY(1);
+  enable <= SW(9); -- na ponta esquerda
+  rst <= SW(8);
+  polaridade <= SW(7);
+  LEDR(3 downto 0) <= STD_LOGIC_VECTOR(data_out);
 
 
 end architecture;

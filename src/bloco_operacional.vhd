@@ -63,7 +63,7 @@ architecture structural of bloco_operacional is
   component sensor_processor is
     generic (
       out_size : integer := 5;
-      mem_size : integer := 60
+      mem_size : integer := 700
     );
     port (
       car1_in     : in  std_logic;

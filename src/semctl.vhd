@@ -166,7 +166,7 @@ begin
       count_value => count_value_internal
     );
 
-  -- Connect internal signal to output port
+  -- Conecta sinal interno a port de saída
   count_value <= count_value_internal;
 
 end architecture;

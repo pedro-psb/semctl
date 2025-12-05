@@ -113,6 +113,8 @@ begin
         elsif count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '0';
         sem1 <= PISC; ped1 <= PISC;
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
@@ -123,6 +125,8 @@ begin
         elsif count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '0';
         sem1 <= PISC; ped1 <= PISC;
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
@@ -134,6 +138,8 @@ begin
         elsif count_done = '1' and polaridade = '1' then
           NS <= PRE_SEM2_OPEN;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERD;
@@ -144,6 +150,8 @@ begin
         if count_done = '1' then
           NS <= SEM2_OPEN;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= AMAR;
         ped3 <= AMAR;
@@ -151,14 +159,18 @@ begin
         if count_done = '1' then
           NS <= POS_SEM2_OPEN;
         end if;
-        sem1 <= VERM; ped1 <= VERD;
+		  car1_enable <= '1';
+		  car2_enable <= '0';
+		  sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERD; ped2 <= VERM;
         ped3 <= VERM;
       when POS_SEM2_OPEN =>
         if count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
-        sem1 <= VERM; ped1 <= VERD;
+		  car1_enable <= '1';
+		  car2_enable <= '0';
+		  sem1 <= VERM; ped1 <= VERD;
         sem2 <= AMAR; ped2 <= VERM;
         ped3 <= VERM;
 
@@ -168,6 +180,8 @@ begin
         if count_done = '1' then
           NS <= SEM1_OPEN;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '0';
         sem1 <= VERM; ped1 <= AMAR;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= AMAR;
@@ -175,6 +189,8 @@ begin
         if count_done = '1' then
           NS <= POS_SEM1_OPEN;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '1';
         sem1 <= VERD; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
@@ -182,6 +198,8 @@ begin
         if count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
+		  car1_enable <= '0';
+		  car2_enable <= '1';
         sem1 <= AMAR; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;

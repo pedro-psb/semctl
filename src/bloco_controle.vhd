@@ -97,12 +97,14 @@ begin
   end process fsm_sync;
 
 
-  fsm_comb: process(PS, in_mad) is
+  fsm_comb: process(PS, in_mad, count_done) is
     constant PISC : STD_LOGIC_VECTOR(1 downto 0) := "00";
     constant VERM : STD_LOGIC_VECTOR(1 downto 0) := "01";
     constant AMAR : STD_LOGIC_VECTOR(1 downto 0) := "10";
     constant VERD : STD_LOGIC_VECTOR(1 downto 0) := "11";
   begin
+    -- Default assignments
+    NS <= PS;  -- Stay in current state by default
     case PS is
       -- especiais
       when INITIAL =>
@@ -125,13 +127,12 @@ begin
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
       when ALL_CLOSED =>
-        if in_mad = '1' then
+        if count_done = '1' and in_mad = '1' then
           NS <= MADR;
         elsif count_done = '1' and polaridade = '0' then
           NS <= PRE_SEM1_OPEN;
-        elsif count_done ='1' and polaridade = '1' then
+        elsif count_done = '1' and polaridade = '1' then
           NS <= PRE_SEM2_OPEN;
-        else NS <= INITIAL;
         end if;
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= VERD;
@@ -140,17 +141,23 @@ begin
       -- ciclo direita
       when PRE_SEM2_OPEN =>
         polaridade <= not polaridade;  -- inverte polaridade do ciclo
-        if count_done = '1' then NS <= SEM2_OPEN; end if;
+        if count_done = '1' then
+          NS <= SEM2_OPEN;
+        end if;
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= AMAR;
         ped3 <= AMAR;
       when SEM2_OPEN =>
-        if count_done = '1' then NS <= POS_SEM2_OPEN; end if;
+        if count_done = '1' then
+          NS <= POS_SEM2_OPEN;
+        end if;
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERD; ped2 <= VERM;
         ped3 <= VERM;
       when POS_SEM2_OPEN =>
-        if count_done = '1' then NS <= ALL_CLOSED; end if;
+        if count_done = '1' then
+          NS <= ALL_CLOSED;
+        end if;
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= AMAR; ped2 <= VERM;
         ped3 <= VERM;
@@ -158,17 +165,23 @@ begin
       -- ciclo esquerda
       when PRE_SEM1_OPEN =>
         polaridade <= not polaridade;  -- inverte polaridade do ciclo
-        if count_done = '1' then NS <= SEM1_OPEN; end if;
+        if count_done = '1' then
+          NS <= SEM1_OPEN;
+        end if;
         sem1 <= VERM; ped1 <= AMAR;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= AMAR;
       when SEM1_OPEN =>
-        if count_done = '1' then NS <= POS_SEM1_OPEN; end if;
+        if count_done = '1' then
+          NS <= POS_SEM1_OPEN;
+        end if;
         sem1 <= VERD; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
       when POS_SEM1_OPEN =>
-        if count_done = '1' then NS <= ALL_CLOSED; end if;
+        if count_done = '1' then
+          NS <= ALL_CLOSED;
+        end if;
         sem1 <= AMAR; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;

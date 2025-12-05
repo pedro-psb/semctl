@@ -36,7 +36,10 @@ entity semctl is
     sem2 : out std_logic_vector(1 downto 0);
     ped1 : out std_logic_vector(1 downto 0);
     ped2 : out std_logic_vector(1 downto 0);
-    ped3 : out std_logic_vector(1 downto 0)
+    ped3 : out std_logic_vector(1 downto 0);
+
+    -- contador exposto para exibir no display
+    count_value : out unsigned(4 downto 0)
   );
 end entity;
 
@@ -95,7 +98,7 @@ architecture structural of semctl is
 
   -- conexoes inter-componente
   signal count_done: std_logic;
-  signal count_value: unsigned(4 downto 0);
+  signal count_value_internal: unsigned(4 downto 0);
   signal car1_enable: std_logic;
   signal car2_enable: std_logic;
   signal polaridade_out: std_logic;
@@ -160,7 +163,10 @@ begin
     clk_1s => clk_1s,
     clk_1000hz => clk_10ms_sig,
     count_done => count_done,
-    count_value => count_value
+    count_value => count_value_internal
   );
+
+  -- Connect internal signal to output port
+  count_value <= count_value_internal;
 
 end architecture;

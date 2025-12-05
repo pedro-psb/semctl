@@ -17,7 +17,8 @@ architecture testbench of tb_semctl is
         sem2 : out std_logic_vector(1 downto 0);
         ped1 : out std_logic_vector(1 downto 0);
         ped2 : out std_logic_vector(1 downto 0);
-        ped3 : out std_logic_vector(1 downto 0)
+        ped3 : out std_logic_vector(1 downto 0);
+        count_value : out unsigned(4 downto 0)
       );
     end component;
 
@@ -32,6 +33,13 @@ architecture testbench of tb_semctl is
       );
     end component;
 
+    component unsigned_hex_decoder is
+      port (
+        unsigned_value : in  unsigned(3 downto 0);
+        display_config : out std_logic_vector(6 downto 0)
+      );
+    end component;
+
     -- sinais to testbench
     signal clk_10ms, rst :  std_logic;
     signal clk_1s :  std_logic;
@@ -42,6 +50,8 @@ architecture testbench of tb_semctl is
     signal ped1 : std_logic_vector(1 downto 0);
     signal ped2 : std_logic_vector(1 downto 0);
     signal ped3 : std_logic_vector(1 downto 0);
+    signal count_value : unsigned(4 downto 0);
+    signal count_display : std_logic_vector(6 downto 0);
 
     -- sinais auxiliares
     signal clk_enable: std_logic := '1';
@@ -68,7 +78,8 @@ begin
             sem2  => sem2,
             ped1  => ped1,
             ped2  => ped2,
-            ped3  => ped3
+            ped3  => ped3,
+            count_value => count_value
         );
 
     clk_process: process
@@ -93,6 +104,13 @@ begin
         in_clk => clk_10ms,
         out_clk => clk_1s,
         RST => rst
+    );
+
+    -- Count display decoder for waveform visualization
+    count_hex_decoder : unsigned_hex_decoder
+    port map(
+        unsigned_value => count_value(3 downto 0),
+        display_config => count_display
     );
 
     test_process: process

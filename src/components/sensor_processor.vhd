@@ -29,10 +29,10 @@ library IEEE;
 entity sensor_processor is
   generic (
     -- Numero de bits da saida (signed)
-    out_size : integer := 5;
+    out_size : integer;
     -- Tamanho da memoria do registrador interno em relacao ao clk de entrada
     -- E.g, se o clk.periodo=1s e mem_size=5, o registrador guarda os ultimos 5 segundos
-    mem_size : integer := 10
+    mem_size : integer
   );
   port (
     car1_in    :  in std_logic;

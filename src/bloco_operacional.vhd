@@ -31,8 +31,8 @@ library IEEE;
 
 entity bloco_operacional is
   generic (
-    mem_size : integer := 60;
-    out_size : integer := 5
+    mem_size : integer;
+    out_size : integer
   );
   port (
     -- Entradas dos sensores
@@ -62,8 +62,8 @@ architecture structural of bloco_operacional is
 
   component sensor_processor is
     generic (
-      out_size : integer := 5;
-      mem_size : integer := 700
+      out_size : integer;
+      mem_size : integer
     );
     port (
       car1_in     : in  std_logic;

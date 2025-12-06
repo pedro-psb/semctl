@@ -95,6 +95,18 @@ begin
     wait;
   end process;
 
+
+  in_car_process : process
+  begin
+    while clk_enable = '1' loop
+      in_car1 <= '0';
+      wait for 0.1 sec;
+      in_car1 <= '1';
+      wait for 0.1 sec;
+    end loop;
+    wait;
+  end process;
+
   -- Clock generation: 100Hz (10ms) -> 1Hz (1s)
   clk_conv_1s : clock_converter
     generic map(
@@ -118,8 +130,7 @@ begin
     -- Initialize all inputs
     rst <= '1';
     in_mad <= '0';
-    in_car1 <= '0';
-    in_car2 <= '0';
+
 
     wait for 0.03 sec;
     rst <= '0';

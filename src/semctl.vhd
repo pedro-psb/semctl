@@ -77,7 +77,7 @@ architecture structural of semctl is
 
   component bloco_operacional is
     generic (
-      mem_size : integer := 60;
+      mem_size : integer := 700;
       out_size : integer := 5
     );
     port (
@@ -109,6 +109,7 @@ architecture structural of semctl is
 
   -- constante para tempo padrão
   constant default_time_const : unsigned(4 downto 0) := "00111"; -- 7s
+  constant mem_size : integer := 700; -- tamanho da memoria do contador interno de carros
 
 
 begin
@@ -148,7 +149,7 @@ begin
 
   operacional_inst : bloco_operacional
     generic map(
-      mem_size => 60,
+      mem_size => mem_size,
       out_size => 5
     )
     port map(

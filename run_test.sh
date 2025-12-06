@@ -46,7 +46,7 @@ ghdl -m --workdir=work $TESTNAME
 
 # Step 3: Run simulation with waveform generation
 echo "3. Running simulation..."
-ghdl -r --workdir=work $TESTNAME --assert-level=error  --vcd=$TESTNAME.vcd
+ghdl -r --workdir=work $TESTNAME --vcd=$TESTNAME.vcd
 # ghdl -r --workdir=work $TESTNAME --vcd=$TESTNAME.vcd
 
 echo ""

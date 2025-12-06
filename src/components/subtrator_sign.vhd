@@ -1,5 +1,5 @@
 -- Subtrator Signed - Subtrai duas entradas unsigned e retorna signed
--- 
+--
 -- generic:
 --   N - Tamanho dos numeros unsigned de entrada
 -- input:
@@ -32,8 +32,8 @@ end entity;
 architecture dataflow of subtrator_sign is
 begin
   output <=
-    SIGNED(RESIZE(b, output'length) - RESIZE(a, output'length)) when inverte = '1' else
-    SIGNED(RESIZE(a, output'length) - RESIZE(b, output'length));
+            SIGNED(RESIZE(b, output'length) - RESIZE(a, output'length)) when inverte = '1' else
+            SIGNED(RESIZE(a, output'length) - RESIZE(b, output'length));
 end architecture;
 
 

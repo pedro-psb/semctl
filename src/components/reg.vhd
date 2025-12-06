@@ -24,11 +24,11 @@ architecture behavoral of reg  is
 begin
   process(clk, rst) is
   begin
-    if (rising_edge(clk)) then
-      data_out <= data_in;
-    elsif (rst = '1') then
+    if (rst = '1') then
       data_out <= '0';
-    else -- mantem memoria inalterada (e.g, enable='0')
+    elsif (rising_edge(clk)) then
+      data_out <= data_in;
+    -- else -- mantem memoria inalterada (e.g, enable='0')
     end if;
   end process;
 end architecture;

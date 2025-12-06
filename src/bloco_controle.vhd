@@ -1,8 +1,8 @@
 -- Bloco de controle do semctl (RTL)
 --
--- 
+--
 -- == I/O Externo
--- 
+--
 -- input:
 --   clk: 1 bit
 --   rst: 1 bit
@@ -14,19 +14,19 @@
 --   ped1: 2 bits     - Saida para semaforo de pedestre 1
 --   ped2: 2 bits     - Saida para semaforo de pedestre 2
 --   ped3: 2 bits     - Saida para semaforo de pedestre 3
--- 
--- 
+--
+--
 -- == I/O Interno
--- 
+--
 -- input:
 --   count_done: 1 bit    - Sinaliza que o contador terminou a contagem
---   
+--
 -- output:
 --   car1_enable: 1 bits  - Enable para sensor de carro 1
 --   car2_enable: 1 bits  - Enable para sensor de carro 2
 --   polaridade: 1 bits   - Representa a polaridade do ciclo. 1 = ciclo em que sem2 abre
 --
--- 
+--
 -- Integrantes:
 -- * Guilherme Augusto
 -- * Pedro Armando
@@ -97,12 +97,14 @@ begin
   end process fsm_sync;
 
 
-  fsm_comb: process(PS, in_mad) is
+  fsm_comb: process(PS, in_mad, count_done) is
     constant PISC : STD_LOGIC_VECTOR(1 downto 0) := "00";
     constant VERM : STD_LOGIC_VECTOR(1 downto 0) := "01";
     constant AMAR : STD_LOGIC_VECTOR(1 downto 0) := "10";
     constant VERD : STD_LOGIC_VECTOR(1 downto 0) := "11";
   begin
+    -- Atribuições padrão
+    NS <= PS;  -- Permanece no estado atual por padrão
     case PS is
       -- especiais
       when INITIAL =>
@@ -111,6 +113,8 @@ begin
         elsif count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
+        car1_enable <= '0';
+        car2_enable <= '0';
         sem1 <= PISC; ped1 <= PISC;
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
@@ -121,18 +125,21 @@ begin
         elsif count_done = '1' then
           NS <= ALL_CLOSED;
         end if;
+        car1_enable <= '0';
+        car2_enable <= '0';
         sem1 <= PISC; ped1 <= PISC;
         sem2 <= PISC; ped2 <= PISC;
         ped3 <= PISC;
       when ALL_CLOSED =>
-        if in_mad = '1' then
+        if count_done = '1' and in_mad = '1' then
           NS <= MADR;
         elsif count_done = '1' and polaridade = '0' then
           NS <= PRE_SEM1_OPEN;
-        elsif count_done ='1' and polaridade = '1' then
+        elsif count_done = '1' and polaridade = '1' then
           NS <= PRE_SEM2_OPEN;
-        else NS <= INITIAL;
         end if;
+        car1_enable <= '0';
+        car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERD;
@@ -140,17 +147,29 @@ begin
       -- ciclo direita
       when PRE_SEM2_OPEN =>
         polaridade <= not polaridade;  -- inverte polaridade do ciclo
-        if count_done = '1' then NS <= SEM2_OPEN; end if;
+        if count_done = '1' then
+          NS <= SEM2_OPEN;
+        end if;
+        car1_enable <= '0';
+        car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERM; ped2 <= AMAR;
         ped3 <= AMAR;
       when SEM2_OPEN =>
-        if count_done = '1' then NS <= POS_SEM2_OPEN; end if;
+        if count_done = '1' then
+          NS <= POS_SEM2_OPEN;
+        end if;
+        car1_enable <= '1';
+        car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= VERD; ped2 <= VERM;
         ped3 <= VERM;
       when POS_SEM2_OPEN =>
-        if count_done = '1' then NS <= ALL_CLOSED; end if;
+        if count_done = '1' then
+          NS <= ALL_CLOSED;
+        end if;
+        car1_enable <= '1';
+        car2_enable <= '0';
         sem1 <= VERM; ped1 <= VERD;
         sem2 <= AMAR; ped2 <= VERM;
         ped3 <= VERM;
@@ -158,22 +177,34 @@ begin
       -- ciclo esquerda
       when PRE_SEM1_OPEN =>
         polaridade <= not polaridade;  -- inverte polaridade do ciclo
-        if count_done = '1' then NS <= SEM1_OPEN; end if;
+        if count_done = '1' then
+          NS <= SEM1_OPEN;
+        end if;
+        car1_enable <= '0';
+        car2_enable <= '0';
         sem1 <= VERM; ped1 <= AMAR;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= AMAR;
       when SEM1_OPEN =>
-        if count_done = '1' then NS <= POS_SEM1_OPEN; end if;
+        if count_done = '1' then
+          NS <= POS_SEM1_OPEN;
+        end if;
+        car1_enable <= '0';
+        car2_enable <= '1';
         sem1 <= VERD; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
       when POS_SEM1_OPEN =>
-        if count_done = '1' then NS <= ALL_CLOSED; end if;
+        if count_done = '1' then
+          NS <= ALL_CLOSED;
+        end if;
+        car1_enable <= '0';
+        car2_enable <= '1';
         sem1 <= AMAR; ped1 <= VERM;
         sem2 <= VERM; ped2 <= VERD;
         ped3 <= VERM;
 
-      -- Others
+      -- Outros
       when others =>
         if count_done = '1' then NS <= INITIAL; end if;
         sem1 <= PISC; ped1 <= PISC;

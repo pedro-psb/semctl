@@ -108,11 +108,7 @@ begin
     case PS is
       -- especiais
       when INITIAL =>
-        if in_mad = '1' then
-          NS <= MADR;
-        elsif count_done = '1' then
-          NS <= ALL_CLOSED;
-        end if;
+        NS <= ALL_CLOSED;
         car1_enable <= '0';
         car2_enable <= '0';
         sem1 <= PISC; ped1 <= PISC;
@@ -146,7 +142,7 @@ begin
 
       -- ciclo direita
       when PRE_SEM2_OPEN =>
-        polaridade <= not polaridade;  -- inverte polaridade do ciclo
+        polaridade <= '0';
         if count_done = '1' then
           NS <= SEM2_OPEN;
         end if;
@@ -176,7 +172,7 @@ begin
 
       -- ciclo esquerda
       when PRE_SEM1_OPEN =>
-        polaridade <= not polaridade;  -- inverte polaridade do ciclo
+        polaridade <= '1';
         if count_done = '1' then
           NS <= SEM1_OPEN;
         end if;

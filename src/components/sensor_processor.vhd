@@ -103,9 +103,8 @@ architecture structural of sensor_processor is
   end component;
 
   -- sinal auxiliar para mapeamento dos componentes
-  -- signal sgn_resultado_slv   : std_logic_vector(5 downto 0);
-  signal sgn_enable_car1 : std_logic;
-  signal sgn_enable_car2 : std_logic;
+  signal clk_com_enable_car1 : std_logic;
+  signal clk_com_enable_car2 : std_logic;
 
   signal sgn_output_CD1   : std_logic;
   signal sgn_output_CD2   : std_logic;
@@ -120,10 +119,8 @@ architecture structural of sensor_processor is
 
 begin
   -- Otimizacao do registrador (no lugar de varias portas and internas)
-  sgn_enable_car1 <= clk and car1_enable;
-  sgn_enable_car2 <= clk and car2_enable;
-  -- sgn_enable_car1 <= clk;
-  -- sgn_enable_car2 <= clk;
+  clk_com_enable_car1 <= clk and car1_enable;
+  clk_com_enable_car2 <= clk and car2_enable;
 
   --=============== CALC_FLUX =====================
   car1_detector :  car_detector port map(
@@ -141,7 +138,7 @@ begin
 
   reg_D1 : reg_deslocamento port map(
       in_car  =>  sgn_output_CD1,
-      clk    =>  clk,
+      clk    =>  clk_com_enable_car1,
       rst    =>  rst,
       reg_out  =>  sgn_output_RG1
 
@@ -149,7 +146,7 @@ begin
 
   reg_D2 : reg_deslocamento port map(
       in_car  =>  sgn_output_CD2,
-      clk    =>  clk,
+      clk    =>  clk_com_enable_car2,
       rst    =>  rst,
       reg_out  =>  sgn_output_RG2
 

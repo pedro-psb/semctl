@@ -54,7 +54,7 @@ library IEEE;
   use IEEE.NUMERIC_STD.ALL;
 
 
-entity d10_semtctl is port (
+entity de10_semctl is port (
     CLOCK_50 : in  std_logic;                -- Clock 50MHz
     KEY : in std_logic_vector(1 downto 0);   -- Push buttons (active low)
     SW : in std_logic_vector(9 downto 0);    -- Slide switches
@@ -68,7 +68,7 @@ entity d10_semtctl is port (
   ); end entity;
 
 
-architecture structural of d10_semtctl
+architecture structural of de10_semctl
 is
   -- Componentes
   component clock_converter is
